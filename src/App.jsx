@@ -72,10 +72,6 @@
 // export default App,
 
 import { Suspense, lazy } from "react";
-
-import Login from "./pages/auth/login/login";
-import Register from "./pages/auth/register/register";
-import ProductList from "./pages/cms/productList/productList";
 import {
   BrowserRouter as Router,
   Routes,
@@ -95,6 +91,11 @@ const Welcome = lazy(() => import("./pages/auth/welcomepage/welcome"));
 const ProfileDetails = lazy(() =>
   import("./pages/auth/profileDetails/profileDetails")
 );
+const Login = lazy(() => import("./pages/auth/login/login"));
+const Register = lazy(() => import("./pages/auth/register/register"));
+const ProductList = lazy(() => import("./pages/cms/productList/productList"));
+
+
 
 // import Footer from './layout/footer/footer';
 
