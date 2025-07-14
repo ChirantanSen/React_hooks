@@ -1,0 +1,109 @@
+/* ....header start................... */
+.head-wrap-bg{
+    background-color: var(--blue);
+    padding: 10px 0;
+}
+.head-text{
+    display: flex;
+    justify-content: space-between;
+    color: var(--white);
+}
+.head-text p{
+    color: var(--white);
+    margin-right: 9px;
+}
+.head-text p a{
+    padding-left: 5px;
+    color: var(--white);
+    text-decoration: none;
+}
+.head-text p a:hover{
+    text-decoration: underline;
+}
+.head-wrap{
+    display: flex;
+    justify-content: space-between;
+}
+.social-icon a{
+    padding-left: 12px;
+    font-size: 18px;
+    color: rgba(209, 206, 206, 0.721);
+    text-decoration: none;
+    transition: ease-in-out 0.2s;
+}
+.social-icon a:hover{
+    color: var(--white);
+}
+.ham-btn{
+    display: none;
+    background: rgb(31, 122, 207);
+    color: #fff;
+    border: none;
+    padding: 10px;
+   
+}
+.biz-nav-list li{
+    display: inline-flex;
+}
+/* ....header end................... */
+
+.top-banner .icon a{
+    color: #222222;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: 500;
+}
+.top-banner .icon a span{
+    color: var(--blue);
+}
+.top-banner{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    background-color: var(--white);
+    align-items: center;
+
+}
+.biz-nav-list li{
+    display: inline; 
+    list-style-type: none;   
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+}
+.biz-nav-list li a, .log{
+    text-decoration: none;
+    color: var(--grey); 
+    transition: ease-in-out 0.2s;
+    position: relative;
+    padding: 0 8px;
+}
+.biz-nav-list li:not(:last-child){
+    padding-right: 15px;
+}
+.biz-nav-list li a:hover, .log:hover{
+  color: var(--blue);
+}
+.biz-nav-list li a.active{
+    color: var(--blue);
+}
+.biz-nav-list li a::after, .log::after{
+    content: "";
+    width: 0%;
+    height: 3px;
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    background: var(--blue);
+    z-index: 1;
+    transition: 0.3s ease-in-out;
+}
+/* For hover  */
+.biz-nav-list li a:hover::after, .log:hover:after{
+    width: 100%;
+}
+/* for active nav menu  */
+.biz-nav-list li a.active::after{
+    width: 100%;
+}

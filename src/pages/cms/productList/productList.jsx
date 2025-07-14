@@ -1,0 +1,223 @@
+// import React, { useEffect, useState } from 'react'
+// import ProductCard from '../../../components/ui/productCard';
+// import axiosInstance, { product_list } from '../../../api/axios/axios';
+// import { endPoints } from '../../../api/endpoints/endpoints';
+// import { Link } from 'react-router-dom';
+// import SweetAlertComponent from '../../../components/sweetAlert/sweetAlert';
+// import { Button } from '@mui/material';
+
+// function ProductList() {
+//     const[list,setList]=useState();
+//     const[id,setId]=useState();
+//     const [modal,setModal]=useState();
+
+//     const handleApi = async ()=>{
+//         try {
+//             const res =await axiosInstance.post(endPoints.crud.list)
+//             setList(res.data.data || [])
+//             return res;
+//         } catch (error) {
+//             console.log(error);
+
+//         }
+//     }
+//     useEffect(()=>{
+//         handleApi();
+//     },[])
+//     // .............
+
+//     const handleDelete=async()=>{
+//         const formData=new FormData()
+//         formData.append("id",id);
+//         try{
+//             const res=await axiosInstance.post(endPoints.crud.remove, formData)
+//             handleApi();
+//             setModal(false);
+//             setList(res.data.data || []);
+//             return res;
+
+//         }catch(error){
+//             console.log(error);
+
+//         }
+//     }
+
+//   return (
+//    <>
+//    {Array.isArray(list) &&
+//    list.map((item,index)=>(
+
+//     <>
+//     {index+1}
+//     <ProductCard key={index} title={item.title} description={item.description}
+//     image={item.image}/>
+
+//            <button onClick={() => {
+//             setId(item._id);
+//             setModal(true); }}
+//             >Delete
+//             </button>
+
+//              <Button onClick={() => {
+//                 setId(item._id);
+//                 setModal(true);
+//               }}>Delete</Button>
+//             <Button href={`/cms/edit/${item._id}`}>Edit</Button>
+
+//     </>
+//    ))
+//    }
+//     {modal && (
+//         <SweetAlertComponent
+//           confirm={() => {
+//             if (id !== undefined) {
+//               handleDelete(id);
+//             } else {
+//               console.error("ID is undefined");
+//             }
+//           }}
+
+//           cancel={() => setModal(false)}
+//           title={"Are you sure?"}
+//           subtitle={"You will not be able to recover!"}
+//         />
+//       )}
+//    </>
+//   )
+// }
+
+// export default ProductList
+
+// .................2..............
+
+import React, { useEffect, useState } from "react";
+import axiosInstance from "../../../api/axios/axios";
+import { endPoints } from "../../../api/endpoints/endpoints";
+import { Link } from "react-router-dom";
+import SweetAlertComponent from "../../../components/sweetAlert/sweetAlert";
+import { product_list } from "../../../api/axios/axios";
+// MUI imports
+import { Box, Button, Grid, Typography, Paper } from "@mui/material";
+
+function ProductList() {
+  const [list, setList] = useState([]);
+  const [id, setId] = useState();
+  const [modal, setModal] = useState(false);
+
+  const handleApi = async () => {
+    try {
+      const res = await axiosInstance.post(endPoints.crud.list);
+      setList(res.data.data || []);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleApi();
+  }, []);
+
+  const handleDelete = async () => {
+    const formData = new FormData();
+    formData.append("id", id);
+    try {
+      await axiosInstance.post(endPoints.crud.remove, formData);
+      setModal(false);
+      handleApi();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Box sx={{ width: "100%", px: 4, py: 4 }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Product List
+      </Typography>
+
+      <Grid container spacing={3}>
+        {Array.isArray(list) &&
+          list.map((item) => (
+            <Grid item xs={12} key={item._id}>
+              <Paper
+                elevation={3}
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  p: 2,
+                  justifyContent: "space-between",
+                  flexWrap: "wrap", // helpful for smaller screens
+                }}
+              >
+                {/* Image */}
+                <Box
+                  component="img"
+                  src={product_list(item.image)}
+                  alt={item.title}
+                  sx={{
+                    width: 100,
+                    height: 100,
+                    objectFit: "cover",
+                    borderRadius: 2,
+                    flexShrink: 0,
+                  }}
+                />
+
+                {/* Title and Description */}
+                <Box sx={{ flexGrow: 1, minWidth: 200 }}>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    {item.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {item.description}
+                  </Typography>
+                </Box>
+
+                {/* Action Buttons */}
+                <Box display="flex" gap={1} flexShrink={0}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    component={Link}
+                    to={`/cms/edit/${item._id}`}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                      setId(item._id);
+                      setModal(true);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              </Paper>
+            </Grid>
+          ))}
+      </Grid>
+
+      {/* Sweet Alert Modal */}
+      {modal && (
+        <SweetAlertComponent
+          confirm={() => {
+            if (id !== undefined) {
+              handleDelete();
+            } else {
+              console.error("ID is undefined");
+            }
+          }}
+          cancel={() => setModal(false)}
+          title={"Are you sure?"}
+          subtitle={"You will not be able to recover!"}
+        />
+      )}
+    </Box>
+  );
+}
+
+export default ProductList;
