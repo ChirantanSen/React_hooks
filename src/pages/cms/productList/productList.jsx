@@ -1,94 +1,138 @@
-// import React, { useEffect, useState } from 'react'
-// import ProductCard from '../../../components/ui/productCard';
-// import axiosInstance, { product_list } from '../../../api/axios/axios';
-// import { endPoints } from '../../../api/endpoints/endpoints';
-// import { Link } from 'react-router-dom';
-// import SweetAlertComponent from '../../../components/sweetAlert/sweetAlert';
-// import { Button } from '@mui/material';
+
+// import React, { useEffect, useState } from "react";
+// import axiosInstance from "../../../api/axios/axios";
+// import { endPoints } from "../../../api/endpoints/endpoints";
+// import { Link } from "react-router-dom";
+// import SweetAlertComponent from "../../../components/sweetAlert/sweetAlert";
+// import { product_list } from "../../../api/axios/axios";
+// // MUI imports
+// import { Box, Button, Grid, Typography, Paper } from "@mui/material";
 
 // function ProductList() {
-//     const[list,setList]=useState();
-//     const[id,setId]=useState();
-//     const [modal,setModal]=useState();
+//   const [list, setList] = useState([]);
+//   const [id, setId] = useState();
+//   const [modal, setModal] = useState(false);
 
-//     const handleApi = async ()=>{
-//         try {
-//             const res =await axiosInstance.post(endPoints.crud.list)
-//             setList(res.data.data || [])
-//             return res;
-//         } catch (error) {
-//             console.log(error);
-
-//         }
+//   const handleApi = async () => {
+//     try {
+//       const res = await axiosInstance.post(endPoints.crud.list);
+//       setList(res.data.data || []);
+//     } catch (error) {
+//       console.log(error);
 //     }
-//     useEffect(()=>{
-//         handleApi();
-//     },[])
-//     // .............
+//   };
 
-//     const handleDelete=async()=>{
-//         const formData=new FormData()
-//         formData.append("id",id);
-//         try{
-//             const res=await axiosInstance.post(endPoints.crud.remove, formData)
-//             handleApi();
-//             setModal(false);
-//             setList(res.data.data || []);
-//             return res;
+//   useEffect(() => {
+//     handleApi();
+//   }, []);
 
-//         }catch(error){
-//             console.log(error);
-
-//         }
+//   const handleDelete = async () => {
+//     const formData = new FormData();
+//     formData.append("id", id);
+//     try {
+//       await axiosInstance.post(endPoints.crud.remove, formData);
+//       setModal(false);
+//       handleApi();
+//     } catch (error) {
+//       console.log(error);
 //     }
+//   };
 
 //   return (
-//    <>
-//    {Array.isArray(list) &&
-//    list.map((item,index)=>(
+//     <Box sx={{ width: "100%", px: 4, py: 4 }}>
+//       <Typography variant="h4" align="center" gutterBottom>
+//         Product List
+//       </Typography>
 
-//     <>
-//     {index+1}
-//     <ProductCard key={index} title={item.title} description={item.description}
-//     image={item.image}/>
+//       <Grid container spacing={3}>
+//         {Array.isArray(list) &&
+//           list.map((item) => (
+//             <Grid item xs={12} key={item._id}>
+//               <Paper
+//                 elevation={3}
+//                 sx={{
+//                   width: "100%",
+//                   display: "flex",
+//                   alignItems: "center",
+//                   gap: 2,
+//                   p: 2,
+//                   justifyContent: "space-between",
+//                   flexWrap: "wrap", // helpful for smaller screens
+//                 }}
+//               >
+//                 {/* Image */}
+//                 <Box
+//                   component="img"
+//                   src={product_list(item.image)}
+//                   alt={item.title}
+//                   sx={{
+//                     width: 100,
+//                     height: 100,
+//                     objectFit: "cover",
+//                     borderRadius: 2,
+//                     flexShrink: 0,
+//                   }}
+//                 />
 
-//            <button onClick={() => {
-//             setId(item._id);
-//             setModal(true); }}
-//             >Delete
-//             </button>
+//                 {/* Title and Description */}
+//                 <Box sx={{ flexGrow: 1, minWidth: 200 }}>
+//                   <Typography variant="subtitle1" fontWeight="bold">
+//                     {item.title}
+//                   </Typography>
+//                   <Typography variant="body2" color="text.secondary">
+//                     {item.description}
+//                   </Typography>
+//                 </Box>
 
-//              <Button onClick={() => {
-//                 setId(item._id);
-//                 setModal(true);
-//               }}>Delete</Button>
-//             <Button href={`/cms/edit/${item._id}`}>Edit</Button>
+//                 {/* Action Buttons */}
+//                 <Box display="flex" gap={1} flexShrink={0}>
+//                   <Button
+//                     variant="outlined"
+//                     color="primary"
+//                     component={Link}
+//                     to={`/cms/edit/${item._id}`}
+//                   >
+//                     Edit
+//                   </Button>
+//                   <Button
+//                     variant="contained"
+//                     color="error"
+//                     onClick={() => {
+//                       setId(item._id);
+//                       setModal(true);
+//                     }}
+//                   >
+//                     Delete
+//                   </Button>
+//                 </Box>
+//               </Paper>
+//             </Grid>
+//           ))}
+//       </Grid>
 
-//     </>
-//    ))
-//    }
-//     {modal && (
+//       {/* Sweet Alert Modal */}
+//       {modal && (
 //         <SweetAlertComponent
 //           confirm={() => {
 //             if (id !== undefined) {
-//               handleDelete(id);
+//               handleDelete();
 //             } else {
 //               console.error("ID is undefined");
 //             }
 //           }}
-
 //           cancel={() => setModal(false)}
 //           title={"Are you sure?"}
 //           subtitle={"You will not be able to recover!"}
 //         />
 //       )}
-//    </>
-//   )
+//     </Box>
+//   );
 // }
 
-// export default ProductList
+// export default ProductList;
 
-// .................2..............
+
+//................................//
 
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axios/axios";
@@ -96,13 +140,25 @@ import { endPoints } from "../../../api/endpoints/endpoints";
 import { Link } from "react-router-dom";
 import SweetAlertComponent from "../../../components/sweetAlert/sweetAlert";
 import { product_list } from "../../../api/axios/axios";
+
 // MUI imports
-import { Box, Button, Grid, Typography, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Typography,
+  Paper,
+  TextField,
+  InputAdornment,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 function ProductList() {
   const [list, setList] = useState([]);
   const [id, setId] = useState();
   const [modal, setModal] = useState(false);
+  const [titleSearch, setTitleSearch] = useState("");
+  const [descSearch, setDescSearch] = useState("");
 
   const handleApi = async () => {
     try {
@@ -129,15 +185,64 @@ function ProductList() {
     }
   };
 
+  // Filter list based on search inputs
+  const filteredList = list.filter((item) => {
+    const titleMatch = item.title
+      ?.toLowerCase()
+      .includes(titleSearch.toLowerCase());
+    const descMatch = item.description
+      ?.toLowerCase()
+      .includes(descSearch.toLowerCase());
+    return titleMatch && descMatch;
+  });
+
   return (
     <Box sx={{ width: "100%", px: 4, py: 4 }}>
       <Typography variant="h4" align="center" gutterBottom>
         Product List
       </Typography>
 
+      {/* Search Bars */}
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 2,
+          mb: 4,
+          justifyContent: "center",
+        }}
+      >
+        <TextField
+          label="Search by Title"
+          variant="outlined"
+          value={titleSearch}
+          onChange={(e) => setTitleSearch(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          label="Search by Description"
+          variant="outlined"
+          value={descSearch}
+          onChange={(e) => setDescSearch(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
       <Grid container spacing={3}>
-        {Array.isArray(list) &&
-          list.map((item) => (
+        {filteredList.length > 0 ? (
+          filteredList.map((item) => (
             <Grid item xs={12} key={item._id}>
               <Paper
                 elevation={3}
@@ -148,10 +253,9 @@ function ProductList() {
                   gap: 2,
                   p: 2,
                   justifyContent: "space-between",
-                  flexWrap: "wrap", // helpful for smaller screens
+                  flexWrap: "wrap",
                 }}
               >
-                {/* Image */}
                 <Box
                   component="img"
                   src={product_list(item.image)}
@@ -165,7 +269,6 @@ function ProductList() {
                   }}
                 />
 
-                {/* Title and Description */}
                 <Box sx={{ flexGrow: 1, minWidth: 200 }}>
                   <Typography variant="subtitle1" fontWeight="bold">
                     {item.title}
@@ -175,7 +278,6 @@ function ProductList() {
                   </Typography>
                 </Box>
 
-                {/* Action Buttons */}
                 <Box display="flex" gap={1} flexShrink={0}>
                   <Button
                     variant="outlined"
@@ -198,10 +300,14 @@ function ProductList() {
                 </Box>
               </Paper>
             </Grid>
-          ))}
+          ))
+        ) : (
+          <Typography variant="body1" sx={{ m: 2 }}>
+            No products found.
+          </Typography>
+        )}
       </Grid>
 
-      {/* Sweet Alert Modal */}
       {modal && (
         <SweetAlertComponent
           confirm={() => {
@@ -221,3 +327,4 @@ function ProductList() {
 }
 
 export default ProductList;
+
